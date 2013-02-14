@@ -13,10 +13,25 @@
 function pars($a) {
 global $href;
 $a = preg_replace ('/\r\n|\n|\r/', '', $a); 
+
 if (preg_match('/504 Gateway Time-out/',$a,$b)) {
 	print "504\n";
+	ssleep(10);
 	return 0;
 }
+
+if (preg_match('/в процессе зельеварения ваш котел взорвался/',$a,$b)){
+	print "BOOM!!!\n";
+}
+
+if (preg_match('/Вы успешно сварили зелье/',$a,$b)){
+	print "GOOD!!!\n";
+}
+
+print time_rent($a)."\n";
+
+// if (preg_match('//',$a,$b)){ 	print "\n"; }
+
 
 if (preg_match('/Следующее помешивание котла через(.+?)<\/span/',$a,$b)){
 //		print_r($b);
@@ -80,9 +95,10 @@ if (preg_match('/ВАРИТЬ/',$a,$b)){
 
 
 
+print "\n nothing parsing\n";
+ssleep(2);
 
-sleep(1);
-exit;
+//exit;
 return 0;
 } // end pars function
 
@@ -93,6 +109,15 @@ $t='Аренда Котла Шубидубу';
 
 if (preg_match("/$t(.+?)<\/span/",$a,$b)){
 //		print_r($b);
+
+	if (preg_match('/(\d+:\d\d:\d\d:\d\d)/',$b[1],$c)) {  //"
+		$ts=($c[1]);
+	print " аренда $ts \n";
+		$s=substr($ts,0,2)*86400+substr($ts,3,2)*3600+substr($ts,6,2)*60+substr($ts,9,2);
+		return $s;
+
+	}
+
 	if (preg_match('/(\d\d:\d\d:\d\d)/',$b[1],$c)) {  //"
 		$ts=($c[1]);
 	print " аренда $ts \n";
@@ -100,6 +125,8 @@ if (preg_match("/$t(.+?)<\/span/",$a,$b)){
 		return $s;
 
 	}
+
+
 }
 
 } //end func 

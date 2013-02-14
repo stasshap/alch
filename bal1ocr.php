@@ -60,7 +60,7 @@ for ($i=0;$i<$cc;$i++){
     $symb = array_search(bin2hex(file_get_contents("$pt$i.wbmp")),$sa);
     $ret .=$symb;
 }
-$fo=microtime(1).'.png';
+$fo=$pt . microtime(1).'.png';
 print " $fo \n ";
 imagepng($image,$fo);
 return $ret;
